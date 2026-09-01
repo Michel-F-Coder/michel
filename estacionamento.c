@@ -20,11 +20,17 @@ float valor_a_pagar_carro;
 FILE *arquivo;
 FILE *temporario;
 FILE *caixa;
+FILE *historico;
+
+//
+//
 
 void exibir_faturamento();
 void registrar_saida();
 void registro_entrada();
 void consultar_situacao();
+void consultar_veiculos_estacionados();
+void historico_veiculos();
 
 void estacionamento()
 {
@@ -39,7 +45,9 @@ void estacionamento()
     printf("2 - Registrar saída\n");
     printf("3 - Consultar situação\n");
     printf("4 - Exibir faturamento\n");
-    printf("5 - Encerrar sistema\n");
+    printf("5 - Exibir veiculos estacionados\n");
+    printf("6 - Exibir historico\n");
+    printf("7 - Encerrar sistema\n");
     scanf("%d", &menu1);
 
     printf("%d", menu1);
@@ -63,6 +71,14 @@ void estacionamento()
         break;
 
     case 5:
+        consultar_veiculos_estacionados();
+        break;
+
+    case 6:
+        historico_veiculos();
+        break;
+
+    case 7:
         printf("Fechando sistema...\n");
         exit(0);
         break;
@@ -72,6 +88,8 @@ void estacionamento()
 void registro_entrada()
 {
     printf("============ REGISTRO DE ENTRADA ==============\n\n");
+
+    historico = fopen("arquivos/estacionamento/historico.txt", "a");
 
     caixa = fopen("arquivos/estacionamento/caixa.txt", "a");
 
@@ -92,9 +110,8 @@ void registro_entrada()
         printf("Dados do veiculo\n");
         printf("========================\n");
 
-        
         printf("Placa do veiculo: \n\n");
-        scanf("%s", placa_do_veiculo);    
+        scanf("%s", placa_do_veiculo);
 
         printf("Tipo do veiculo: \n\n1 - CARRO\n2 - MOTO");
         scanf("%d", &tipo_de_veiculo);
@@ -103,6 +120,8 @@ void registro_entrada()
         scanf("%f", &quantidade_de_horas);
 
         fprintf(arquivo, "Placa do veiculo: %7s / Tipo de veiculo: %d / Total de horas: %.2f\n", placa_do_veiculo, tipo_de_veiculo, quantidade_de_horas);
+
+        fprintf(historico, "Placa do veiculo: %7s / Tipo de veiculo: %d / Total de horas: %.2f\n", placa_do_veiculo, tipo_de_veiculo, quantidade_de_horas);
 
         fprintf(caixa, "Placa do veiculo: %7s / Tipo de veiculo: %d / Total de horas: %.2f\n", placa_do_veiculo, tipo_de_veiculo, quantidade_de_horas);
 
@@ -120,7 +139,7 @@ void registrar_saida()
     printf("============ REGISTRO DE SAIDA ==============\n\n");
 
     int placa_encontrada = 0;
-    char buscador_de_placa[6];
+    char buscador_de_placa[8];
 
     temporario = fopen("arquivos/estacionamento/temporario.txt", "w");
 
@@ -249,3 +268,72 @@ void exibir_faturamento()
 
     printf("Faturamento: R$ %.2f\n\n", faturamento);
 }
+
+void consultar_veiculos_estacionados()
+{
+    printf("============ VEICULOS ESTACIONADOS ==============\n\n");
+
+    arquivo = fopen("arquivos/estacionamento/cadastros.txt", "r");
+
+    if (arquivo == NULL)
+    {
+        printf("\nErro ao abrir o arquivo\n");
+    }
+
+    while (fscanf(arquivo, "Placa do veiculo: %s / Tipo de veiculo: %d / Total de horas: %f\n", placa_do_veiculo, &tipo_de_veiculo, &quantidade_de_horas) == 3)
+    {
+        printf("---------------------------------------\n");
+        printf("Placa: %s\n", placa_do_veiculo);
+        printf("Tipo de Veiculo: %d\n", tipo_de_veiculo);
+        printf("Quantidade de horas: %.2f\n", quantidade_de_horas);
+
+        switch (tipo_de_veiculo)
+        {
+        case 1:
+            valor_a_pagar_carro = quantidade_de_horas * valor_carro;
+            printf("Valor a pagar: %.2f\n\n", valor_a_pagar_carro);
+            break;
+
+        case 2:
+            valor_a_pagar_moto = quantidade_de_horas * valor_moto;
+            printf("Valor a pagar: %.2f\n", valor_a_pagar_moto);
+            break;
+        }
+        printf("---------------------------------------\n");
+    }
+    fclose(arquivo);
+}
+
+void historico_veiculos()
+{
+    printf("============ HISTORICO ==============\n\n");
+
+    historico = fopen("arquivos/estacionamento/historico.txt", "a");
+
+    if (arquivo == NULL)
+    {
+        printf("\nErro ao abrir o arquivo\n");
+    }
+
+    while (fscanf(arquivo, "Placa do veiculo: %s / Tipo de veiculo: %d / Total de horas: %f\n", placa_do_veiculo, &tipo_de_veiculo, &quantidade_de_horas) == 3)
+    {
+        printf("---------------------------------------\n");
+        printf("Placa: %s\n", placa_do_veiculo);
+        printf("Tipo de Veiculo: %d\n", tipo_de_veiculo);
+        printf("Quantidade de horas: %.2f\n", quantidade_de_horas);
+
+        switch (tipo_de_veiculo)
+        {
+        case 1:
+            valor_a_pagar_carro = quantidade_de_horas * valor_carro;
+            printf("Valor pago: %.2f\n\n", valor_a_pagar_carro);
+            break;
+
+        case 2:
+            valor_a_pagar_moto = quantidade_de_horas * valor_moto;
+            printf("Valor pago: %.2f\n", valor_a_pagar_moto);
+            break;
+        }
+        printf("---------------------------------------\n");
+    }
+} 
