@@ -1,0 +1,3 @@
+Placa do veiculo: asd1234 / Tipo de veiculo: 1 / Total de horas: 24.00
+Placa do veiculo:     asd / Tipo de veiculo: 2 / Total de horas: 24.00
+Placa do veiculo: asd1234 / Tipo de veiculo: 2 / Total de horas: 1.00

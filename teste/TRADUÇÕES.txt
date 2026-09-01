@@ -1,0 +1,28 @@
+se -> if 
+senao -> else
+escolha -> switch 
+
+enquanto -> while 
+para -> for  
+
+funcao -> function 
+
+pare -> break
+retorne -> return 
+ 
+escreva -> printf (phyton -> print)
+leia -> scanf
+
+
+inteiro -> int (%d)
+verdadeirp -> true  
+falso -> false
+real -> float ou double (phyton -> float) (java -> double) (%f)
+cadeia -> char [quantidade maxima de caracteres] (phyton -> str) (%c ou %s com vetor)
+logico -> bool (java -> boolean)
+
+vazio -> void 
+
+inicio -> main
+
+
